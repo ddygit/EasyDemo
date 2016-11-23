@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.administrator.easyshopdemo">
-<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
+        android:name=".EasyShopApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,9 +20,11 @@
         </activity>
         <activity android:name=".main.SplashActivity">
         </activity>
-        <activity android:name=".user.LoginActivity">
+        <activity android:name=".user.login.LoginActivity">
         </activity>
-        <activity android:name=".user.RegisterActivity">
+        <activity android:name=".user.register.RegisterActivity">
+        </activity>
+        <activity android:name=".main.me.personInfo.PersonActivity">
         </activity>
     </application>
 

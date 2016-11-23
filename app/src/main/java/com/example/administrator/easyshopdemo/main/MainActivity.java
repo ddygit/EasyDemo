@@ -14,6 +14,7 @@ import com.example.administrator.easyshopdemo.R;
 import com.example.administrator.easyshopdemo.commons.ActivityUtils;
 import com.example.administrator.easyshopdemo.main.me.MeFragment;
 import com.example.administrator.easyshopdemo.main.shop.ShopFragment;
+import com.example.administrator.easyshopdemo.model.CachePreferences;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -46,14 +47,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
         activityUtils = new ActivityUtils(this);
-                setSupportActionBar(tbMain);
-                getSupportActionBar().setTitle("");
+        setSupportActionBar(tbMain);
+        getSupportActionBar().setTitle("");
+//        CachePreferences.clearAllData();
         init();
     }
 
     private void init() {
         textViews[0].setSelected(true);
-        viewPager.setAdapter(unLoginAdapter);
+
+        if (CachePreferences.getUser().getName() == null) {
+            viewPager.setAdapter(unLoginAdapter);
+        } else {
+            viewPager.setAdapter(loginAdapter);
+        }
         viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -102,6 +109,30 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private FragmentStatePagerAdapter loginAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+
+                case 0:
+                    return new ShopFragment();
+                case 1:
+                    return new UnLoginFragment();
+                case 2:
+                    return new UnLoginFragment();
+                case 3:
+                    return new MeFragment();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+    };
+
+
     @Override
     public void onBackPressed() {
         if (!isExist) {
@@ -126,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick({R.id.tv_shop, R.id.tv_msg, R.id.tv_mail, R.id.tb_me})
     public void onClick(TextView view) {
-       for(int i=0;i<textViews.length;i++){
-           textViews[i].setSelected(false);
-           textViews[i].setTag(i);
-       }
+        for (int i = 0; i < textViews.length; i++) {
+            textViews[i].setSelected(false);
+            textViews[i].setTag(i);
+        }
         view.setSelected(true);
-        viewPager.setCurrentItem((Integer) view.getTag(),false);
+        viewPager.setCurrentItem((Integer) view.getTag(), false);
         tvTitle.setText(textViews[(Integer) view.getTag()].getText());
     }
 
